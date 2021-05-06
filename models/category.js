@@ -7,7 +7,9 @@ const CategorySchema = new mongoose.Schema({
         required: true
     },
     parId: {
-        type: String
+        type: String,
+        require: true,
+        default: "root"
     },
     edge: {
         type: Boolean
