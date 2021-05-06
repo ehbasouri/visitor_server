@@ -29,7 +29,7 @@ const getUsersSchema = {
     query: Joi.object({
         page : Joi.string(),
         limit: Joi.string()
-    }),
+    })
 }
 
 module.exports = {

@@ -10,8 +10,10 @@ const categorySchema = {
 
 const getCategorySchema = {
     query: Joi.object({
-        parId : Joi.string().required()
-    }),
+        parId : Joi.string().required(),
+        page : Joi.string(),
+        limit: Joi.string()
+    })
 }
 
 const deleteCategorySchema = {

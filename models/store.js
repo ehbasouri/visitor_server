@@ -6,9 +6,6 @@ const StoreSchema = new mongoose.Schema({
         lowercase: true,
         required: true
     },
-    edge: {
-        type: Boolean
-    },
     user_id: {
         type: String,
         required: true

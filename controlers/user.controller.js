@@ -1,15 +1,15 @@
-const {
-    registerUser,
-    findOneUser,
-    getUsersQuery
-} = require("../queries/user.query");
 const jwt = require("jsonwebtoken");
 const Bcrypt = require("bcrypt");
+const queries = require("../queries/query");
+const User = require("../models/user");
+
+const userQuery = Object.create(queries);
+userQuery.Model = User;
 
 async function register(req, res, next) { 
     try {
         const { password, ...body } = req.body;
-        const existUser = await findOneUser({username : body.username})
+        const existUser = await userQuery.getOneQuery({username : body.username})
         if(existUser !== null){
             return res.status(409).json({
                 message : "user exist"
@@ -21,7 +21,7 @@ async function register(req, res, next) {
         if(req.user)
             user_id = req.user.id;
 
-        const result = await registerUser({
+        const result = await userQuery.insertQuery({
             ...body,
             password: hashedPassword,
             user_id
@@ -44,7 +44,7 @@ async function login(req, res, next) {
         const authHeader = req.headers.authorization;
         console.log("authHeader : ", authHeader)
         // filter user from the users array by username and password
-        const user = await findOneUser({username})
+        const user = await userQuery.getOneQuery({username})
         if (user) {
             const isAuthenticated = Bcrypt.compareSync(password, user.password);
             if(!isAuthenticated)
@@ -73,7 +73,7 @@ async function login(req, res, next) {
 async function getUserInfo(req, res, next) {
     try {
         const { id } = req.user;
-        const user = await findOneUser({_id: id})
+        const user = await userQuery.getOneQuery({_id: id})
         const rawUser = JSON.parse(JSON.stringify(user))
         delete rawUser.password;
 
@@ -93,7 +93,7 @@ async function getUserInfo(req, res, next) {
 async function getUsersController(req, res, next) {
     try {
         const { id } = req.user;
-        const users = await getUsersQuery({user_id: id}, req.query.page, req.query.limit)
+        const users = await userQuery.getQuery({user_id: id}, req.query.page, req.query.limit)
         return res.json({users});
     } catch (error) {
         next(error);

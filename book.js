@@ -1,31 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const authenticateJWT = require("./middleware/authentication");
 
-const books = require("./consts/books");
-
-const app = express();
-
-app.use(bodyParser.json());
-
-app.get('/books', authenticateJWT, (req, res) => {
-    res.json(books);
-});
-
-app.post('/books', authenticateJWT, (req, res) => {
-    const { role } = req.user;
-
-    if (role !== 'admin') {
-        return res.sendStatus(403);
+const queries = {
+    Model: "test",
+    insertQuery : (data) => {
+        console.log("this.Model", this.Model)
+        const newCategory = new this.Model(data);
+        return newCategory.save()
+    },
+    getQuery : (data) => {
+        return this.Model.find(data)
+    },
+    deleteQuery : (data) => {
+        return this.Model.findOneAndDelete(data)
+    },
+    putQuery : (_id, data) => {
+        return this.Model.findOneAndUpdate({_id}, data)
     }
+}
 
-    const book = req.body;
-    books.push(book);
+const catQuery = Object.create(queries);
 
-    res.send('Book added successfully');
-});
-
-app.listen(4000, () => {
-    console.log('Books service started on port 4000');
-});
+console.log("catQuery", catQuery.Model, queries);

@@ -17,11 +17,11 @@ const ProductsSchema = new mongoose.Schema({
         default: 0
     },
     cat_id: {
-        trype: String,
+        type: String,
         required: true     
     },
     store_id: {
-        trype: String,
+        type: String,
         required: true   
     },
     count: {
@@ -30,11 +30,13 @@ const ProductsSchema = new mongoose.Schema({
     },
     created_at: {
         type: Date,
-        required: true
+        required: true,
+        default: new Date()
     },
     updated_at: {
         type: Date,
-        required: true
+        required: true,
+        default: new Date()
     },
     user_id: {
         type: String,
