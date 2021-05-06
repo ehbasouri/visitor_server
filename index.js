@@ -27,6 +27,15 @@ db.connect(`${process.env.DB_HOST}/${process.env.DB_NAME}`, (err) => {
 
 app.use('/api', apiRouter);
 
+app.use(function (err, req, res, next) {
+    if (err.status === 400) {
+        return res.status(400).send(err);
+    }
+    console.log(err.message, err.stack, req, res.locals);
+    res.status(500).send('Internal Error has been occurred. Please try later');
+    next();
+});
+
 app.post('/login', (req, res) => {
     // read username and password from request body
     const { username, password } = req.body;

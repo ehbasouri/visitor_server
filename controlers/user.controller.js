@@ -1,11 +1,12 @@
 const registerUser = require("../queries/register.user");
+const Bcrypt = require("bcrypt")
 
 function register(req, res, next) {
-    const { username, password } = req.body;
-    console.log("username, password : ", username, password)
+    const { password, ...body } = req.body;
+    const hashedPassword = Bcrypt.hashSync(password, 10)
     registerUser({
-        username,
-        password
+        ...body,
+        password: hashedPassword
     })
         .then(function (result) {
             res.status(200).json({
