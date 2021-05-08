@@ -14,7 +14,7 @@ const CategorySchema = new mongoose.Schema({
     edge: {
         type: Boolean
     },
-    user_id: {
+    business_id: {
         type: String,
         required: true
     }

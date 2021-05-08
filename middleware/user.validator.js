@@ -16,6 +16,18 @@ const userSchema = {
     }),
 }
 
+const putUserSchema = {
+    body: Joi.object({
+        email : Joi.string().email(),
+        name : Joi.string(),
+        address: Joi.string(),
+        phone: Joi.string(),
+        mobile: Joi.string(),
+        avatar: Joi.string(),
+        role: Joi.string()
+    }),
+}
+
 const loginSchema = {
     body: Joi.object({
         username : Joi.string().required(),
@@ -28,12 +40,22 @@ const loginSchema = {
 const getUsersSchema = {
     query: Joi.object({
         page : Joi.string(),
-        limit: Joi.string()
+        limit: Joi.string(),
+
+        username : Joi.string(),
+        email : Joi.string().email(),
+        name : Joi.string(),
+        address: Joi.string(),
+        phone: Joi.string(),
+        mobile: Joi.string(),
+        avatar: Joi.string(),
+        role: Joi.string()
     })
 }
 
 module.exports = {
     userSchema,
     loginSchema,
-    getUsersSchema
+    getUsersSchema,
+    putUserSchema
 }

@@ -11,10 +11,18 @@ const {
     register, 
     login, 
     getUserInfo, 
+    updateUserInfo,
     getUsersController} = require('../controlers/user.controller');
+const {
+    registerBusinessController,
+    loginBusinessController,
+    getBusinessInfoController,
+    getBusinessController,
+    updateBusinessInfoController} = require('../controlers/business.controller');
 const { 
     inserCategoryController,
     getCategoriesController,
+    getBusinessCategoriesController,
     deleteCategoriesController,
     putCategoriesController } = require('../controlers/category,controller');
 const { 
@@ -26,16 +34,19 @@ const {
     inserProductController,
     getProductController,
     deleteProductController,
+    getBusinessProductController,
     putProductController } = require('../controlers/product.controller');
 
 //validator
 const { 
     userSchema, 
     loginSchema, 
+    putUserSchema,
     getUsersSchema } = require('../middleware/user.validator');
 const { 
     categorySchema,
     getCategorySchema,
+    getBusinessCategorySchema,
     deleteCategorySchema,
     putCategorySchema } = require('../middleware/category.validator');
 const { 
@@ -47,32 +58,42 @@ const {
     productSchema,
     getProductSchema,
     deleteProductSchema,
-    putProductSchema } = require('../middleware/product.validatore');
+    putProductSchema, 
+    getBusinessProductSchema} = require('../middleware/product.validatore');
 
 //user
 apiRouter.post('/register', validate(userSchema, {}, {}), register);
-apiRouter.post('/registermember', authenticateJWT, authorization, validate(userSchema, {}, {}), register);
 apiRouter.post('/login', validate(loginSchema, {}, {}), login);
 apiRouter.get('/getuserinfo', authenticateJWT, getUserInfo);
-apiRouter.get('/getusers', authenticateJWT, authorization, validate(getUsersSchema, {}, {}), getUsersController);
+apiRouter.put('/user', authenticateJWT, validate(putUserSchema, {}, {}), updateUserInfo);
+apiRouter.get('/business/getusers', authenticateJWT, authorization, validate(getUsersSchema, {}, {}), getUsersController);
+
+//business
+apiRouter.post('/business/register', validate(userSchema, {}, {}), registerBusinessController);
+apiRouter.post('/business/login', validate(loginSchema, {}, {}), loginBusinessController);
+apiRouter.get('/business/getinfo', authenticateJWT, getBusinessInfoController);
+apiRouter.get('/business', authenticateJWT, validate(getUsersSchema, {}, {}), getBusinessController);
+apiRouter.put('/business', authenticateJWT, validate(putUserSchema, {}, {}), updateBusinessInfoController);
 
 //category
-apiRouter.post('/category', authenticateJWT, authorization, validate(categorySchema, {}, {}), inserCategoryController);
-apiRouter.get('/category', authenticateJWT, authorization, validate(getCategorySchema, {}, {}), getCategoriesController );
-apiRouter.delete('/category', authenticateJWT, authorization, validate(deleteCategorySchema, {}, {}), deleteCategoriesController );
-apiRouter.put('/category', authenticateJWT, authorization, validate(putCategorySchema, {}, {}), putCategoriesController );
+apiRouter.post('/business/category', authenticateJWT, authorization, validate(categorySchema, {}, {}), inserCategoryController);
+apiRouter.get('/category', authenticateJWT, validate(getCategorySchema, {}, {}), getCategoriesController );
+apiRouter.get('/business/category', authenticateJWT, authorization, validate(getBusinessCategorySchema, {}, {}), getBusinessCategoriesController );
+apiRouter.delete('/business/category', authenticateJWT, authorization, validate(deleteCategorySchema, {}, {}), deleteCategoriesController );
+apiRouter.put('/business/category', authenticateJWT, authorization, validate(putCategorySchema, {}, {}), putCategoriesController );
 
 //store
-apiRouter.post('/store', authenticateJWT, authorization, validate(storeSchema, {}, {}), inserStoreController);
-apiRouter.get('/store', authenticateJWT, authorization, validate(getStoreSchema, {}, {}), getStoreController );
-apiRouter.delete('/store', authenticateJWT, authorization, validate(deleteStoreSchema, {}, {}), deleteStoreController );
-apiRouter.put('/store', authenticateJWT, authorization, validate(putStoreSchema, {}, {}), putStoreController );
+apiRouter.post('/business/store', authenticateJWT, authorization, validate(storeSchema, {}, {}), inserStoreController);
+apiRouter.get('/business/store', authenticateJWT, authorization, validate(getStoreSchema, {}, {}), getStoreController );
+apiRouter.delete('/business/store', authenticateJWT, authorization, validate(deleteStoreSchema, {}, {}), deleteStoreController );
+apiRouter.put('/business/store', authenticateJWT, authorization, validate(putStoreSchema, {}, {}), putStoreController );
 
 //product
-apiRouter.post('/product', authenticateJWT, authorization, validate(productSchema, {}, {}), inserProductController);
-apiRouter.get('/product', authenticateJWT, authorization, validate(getProductSchema, {}, {}), getProductController );
-apiRouter.delete('/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
-apiRouter.put('/product', authenticateJWT, authorization, validate(putProductSchema, {}, {}), putProductController );
+apiRouter.post('/business/product', authenticateJWT, authorization, validate(productSchema, {}, {}), inserProductController);
+apiRouter.get('/product', authenticateJWT, validate(getProductSchema, {}, {}), getProductController );
+apiRouter.get('/business/product', authenticateJWT, authorization, validate(getBusinessProductSchema, {}, {}), getBusinessProductController );
+apiRouter.delete('/business/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
+apiRouter.put('/business/product', authenticateJWT, authorization, validate(putProductSchema, {}, {}), putProductController );
 
 // apiRouter.delete('/product/:id', Controller.deleteProduct);
 // apiRouter.put('/product/:id', validateRequest.checkProduct, validateRequest.productValidator, Controller.updateProduct);

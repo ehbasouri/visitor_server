@@ -6,7 +6,7 @@ productQueries.Model = Product;
 
 async function inserProductController(req, res, next) {
     try {
-        const product = await productQueries.insertQuery({...req.body, user_id : req.user.id});
+        const product = await productQueries.insertQuery({...req.body, business_id : req.user._id});
         return res.status(200).json(product)
     } catch (error) {
         next(error)
@@ -15,7 +15,16 @@ async function inserProductController(req, res, next) {
 
 async function getProductController(req, res, next) {
     try {
-        const product = await productQueries.getQuery({ user_id: req.user.id, ...req.query}, req.query.page, req.query.limit);
+        const product = await productQueries.getQuery(req.query, req.query.page, req.query.limit);
+        return res.status(200).json(product)
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getBusinessProductController(req, res, next) {
+    try {
+        const product = await productQueries.getQuery({ business_id: req.user._id, ...req.query}, req.query.page, req.query.limit);
         return res.status(200).json(product)
     } catch (error) {
         next(error);
@@ -24,7 +33,7 @@ async function getProductController(req, res, next) {
 
 async function deleteProductController(req, res, next) {
     try {
-        const result = await productQueries.deleteQuery({_id: req.query.id, user_id: req.user.id});
+        const result = await productQueries.deleteQuery({_id: req.query.id, business_id: req.user._id});
         return res.status(200).json(result)
     } catch (error) {
         next(error);
@@ -33,7 +42,7 @@ async function deleteProductController(req, res, next) {
 
 async function putProductController(req, res, next) {
     try {
-        const result = await productQueries.putQuery(req.query.id, { ...req.body, user_id: req.user.id});
+        const result = await productQueries.putQuery(req.query.id, { ...req.body, business_id: req.user._id});
         return res.status(200).json(result)
     } catch (error) {
         next(error);
@@ -44,6 +53,7 @@ module.exports = {
     inserProductController,
     getProductController,
     deleteProductController,
-    putProductController
+    putProductController,
+    getBusinessProductController
 }
 

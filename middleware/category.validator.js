@@ -11,6 +11,19 @@ const categorySchema = {
 const getCategorySchema = {
     query: Joi.object({
         parId : Joi.string().required(),
+        business_id: Joi.string().required(),
+        name : Joi.string(),
+        edge : Joi.boolean(),
+        page : Joi.string(),
+        limit: Joi.string()
+    })
+}
+
+const getBusinessCategorySchema = {
+    query: Joi.object({
+        parId : Joi.string().required(),
+        name : Joi.string(),
+        edge : Joi.boolean(),
         page : Joi.string(),
         limit: Joi.string()
     })
@@ -37,7 +50,8 @@ module.exports = {
     categorySchema,
     getCategorySchema,
     deleteCategorySchema,
-    putCategorySchema
+    putCategorySchema,
+    getBusinessCategorySchema
 }
 
 

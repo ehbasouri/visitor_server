@@ -1,16 +1,16 @@
 const jwt = require("jsonwebtoken");
 const Bcrypt = require("bcrypt");
 const queries = require("../queries/query");
-const User = require("../models/user");
+const Business = require("../models/business");
 const { jwtCreation } = require("../utils/jwt.creation");
 
-const userQuery = Object.create(queries);
-userQuery.Model = User;
+const businessQuery = Object.create(queries);
+businessQuery.Model = Business;
 
-async function register(req, res, next) { 
+async function registerBusinessController(req, res, next) { 
     try {
         const { password, ...body } = req.body;
-        const existUser = await userQuery.getOneQuery({username : body.username})
+        const existUser = await businessQuery.getOneQuery({username : body.username})
         if(existUser !== null){
             return res.status(409).json({
                 message : "user exist"
@@ -18,7 +18,7 @@ async function register(req, res, next) {
         }
         const hashedPassword = Bcrypt.hashSync(password, 10)
 
-        const result = await userQuery.insertQuery({
+        const result = await businessQuery.insertQuery({
             ...body,
             password: hashedPassword
         })
@@ -36,13 +36,13 @@ async function register(req, res, next) {
     }
 }
 
-async function login(req, res, next) {
+async function loginBusinessController(req, res, next) {
     try {
         // read username and password from request body
         const { username, password } = req.body;
         const authHeader = req.headers.authorization;
         // filter user from the users array by username and password
-        const user = await userQuery.getOneQuery({username})
+        const user = await businessQuery.getOneQuery({username})
         if (user) {
             const isAuthenticated = Bcrypt.compareSync(password, user.password);
             if(!isAuthenticated)
@@ -70,10 +70,10 @@ async function login(req, res, next) {
 }
 
 
-async function getUserInfo(req, res, next) {
+async function getBusinessInfoController(req, res, next) {
     try {
         const { _id } = req.user;
-        const user = await userQuery.getOneQuery({_id})
+        const user = await businessQuery.getOneQuery({_id})
         const rawUser = JSON.parse(JSON.stringify(user))
         delete rawUser.password;
 
@@ -90,9 +90,9 @@ async function getUserInfo(req, res, next) {
 
 }
 
-async function getUsersController(req, res, next) {
+async function getBusinessController(req, res, next) {
     try {
-        const users = await userQuery.getQuery(req.query, req.query.page, req.query.limit)
+        const users = await businessQuery.getQuery(req.query, req.query.page, req.query.limit)
         return res.json({users});
     } catch (error) {
         next(error);
@@ -100,9 +100,9 @@ async function getUsersController(req, res, next) {
 
 }
 
-async function updateUserInfo(req, res, next) {
+async function updateBusinessInfoController(req, res, next) {
     try {
-        const user = await userQuery.putQuery(req.user._id, req.body) 
+        const user = await businessQuery.putQuery(req.user._id, req.body) 
         return res.json({user});
     } catch (error) {
         next(error);
@@ -135,9 +135,9 @@ function refreshToken (req, res, next){
 }
 
 module.exports = {
-    register,
-    login,
-    getUserInfo,
-    getUsersController,
-    updateUserInfo
+    registerBusinessController,
+    loginBusinessController,
+    getBusinessInfoController,
+    getBusinessController,
+    updateBusinessInfoController
 };

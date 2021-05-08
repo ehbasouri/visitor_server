@@ -31,7 +31,7 @@ function createProduct(req, res, next) {
     const product = {
         name: req.body.name,
         price: req.body.price,
-        user_id: res.locals.user.id,
+        business_id: res.locals.user.id,
         description: req.body.description,
         cat1: req.body.cat1,
         cat2: req.body.cat2,
@@ -129,7 +129,7 @@ async function uploadProductImage(req, res, next) {
         const HQFileName = `${width}_${height}_${imageName}`
         const mediaIndex = req.params.mediaIndex;
         const lastFile = req.params.lastFile;
-        const user_id = res.locals.user.id
+        const business_id = res.locals.user.id
 
         let widthIndex = allowedWidths.indexOf(Number(width));
         if (widthIndex <= -1) {
@@ -154,7 +154,7 @@ async function uploadProductImage(req, res, next) {
                 client.submitJob(process.env.JOB_IMAGE_RESIZER, JSON.stringify({ owner: uid, fileName: HQFileName, newWidth, newHeight, newName }));
             }
 
-            updateProductMediaQuery(pID, imageSizes, Number(mediaIndex), 1, lastFile, user_id).then(result => {
+            updateProductMediaQuery(pID, imageSizes, Number(mediaIndex), 1, lastFile, business_id).then(result => {
                 return res.status(200).send(true);
             }).catch(error => {
                 next(error);
@@ -199,7 +199,7 @@ async function uploadProductVideo(req, res, next) {
         const fromBytes = req.params.fromBytes;
         const mediaIndex = req.params.mediaIndex;
         const lastFile = req.params.lastFile;
-        const user_id = res.locals.user.id
+        const business_id = res.locals.user.id
 
         // ----------- upload callback -------------
 
@@ -209,7 +209,7 @@ async function uploadProductVideo(req, res, next) {
                 return res.status(403).send(err);
             }
 
-            updateProductMediaQuery(pID, [videoName], Number(mediaIndex), 2, lastFile, user_id).then(result => {
+            updateProductMediaQuery(pID, [videoName], Number(mediaIndex), 2, lastFile, business_id).then(result => {
                 res.status(200).send(true);
             }).catch(error => {
                 next(error);

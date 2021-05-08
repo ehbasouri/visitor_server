@@ -2,7 +2,7 @@ const Product = require('../models/products');
 const PreProduct = require('../models/preProduct');
 const utils = require('../src/utils');
 
-async function updateProductMediaQuery(_id, media, mediaIndex, type, lastFile, user_id) {
+async function updateProductMediaQuery(_id, media, mediaIndex, type, lastFile, business_id) {
     const preProduct = await PreProduct.findOne({_id})
     preProduct.medias = [...preProduct.medias, [ mediaIndex, type, media ]]
     if (lastFile === 'false') {
@@ -21,7 +21,7 @@ async function updateProductMediaQuery(_id, media, mediaIndex, type, lastFile, u
         };
         product.tags = utils.createTag(preProduct);
         
-        const newProduct = new Product({ ...product, created_at: new Date(), user_id, updated_at: new Date() });
+        const newProduct = new Product({ ...product, created_at: new Date(), business_id, updated_at: new Date() });
         await PreProduct.deleteOne({_id})
         return newProduct.save()
         // console.log(newProduct)

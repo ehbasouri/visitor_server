@@ -9,7 +9,9 @@ const storeSchema = {
 const getStoreSchema = {
     query: Joi.object({
         page : Joi.string(),
-        limit: Joi.string()
+        limit: Joi.string(),
+
+        name : Joi.string()
     })
 }
 

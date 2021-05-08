@@ -6,7 +6,7 @@ storeQueries.Model = Store;
 
 async function inserStoreController(req, res, next) {
     try {
-        const store = await storeQueries.insertQuery({...req.body, user_id : req.user.id});
+        const store = await storeQueries.insertQuery({...req.body, business_id : req.user._id});
         return res.status(200).json(store)
     } catch (error) {
         next(error)
@@ -15,7 +15,7 @@ async function inserStoreController(req, res, next) {
 
 async function getStoreController(req, res, next) {
     try {
-        const store = await storeQueries.getQuery({ user_id: req.user.id}, req.query.page, req.query.limit);
+        const store = await storeQueries.getQuery({ business_id: req.user._id}, req.query.page, req.query.limit);
         return res.status(200).json(store)
     } catch (error) {
         next(error);
@@ -24,7 +24,7 @@ async function getStoreController(req, res, next) {
 
 async function deleteStoreController(req, res, next) {
     try {
-        const result = await storeQueries.deleteQuery({_id: req.query.id, user_id: req.user.id});
+        const result = await storeQueries.deleteQuery({_id: req.query.id, business_id: req.user._id});
         return res.status(200).json(result)
     } catch (error) {
         next(error);
@@ -33,7 +33,7 @@ async function deleteStoreController(req, res, next) {
 
 async function putStoreController(req, res, next) {
     try {
-        const result = await storeQueries.putQuery(req.query.id, { ...req.body, user_id: req.user.id});
+        const result = await storeQueries.putQuery(req.query.id, { ...req.body, business_id: req.user._id});
         return res.status(200).json(result)
     } catch (error) {
         next(error);

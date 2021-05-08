@@ -38,7 +38,7 @@ const ProductsSchema = new mongoose.Schema({
         required: true,
         default: new Date()
     },
-    user_id: {
+    business_id: {
         type: String,
         required: true
     },

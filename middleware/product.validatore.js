@@ -15,8 +15,34 @@ const productSchema = {
 
 const getProductSchema = {
     query: Joi.object({
+        business_id: Joi.string().required(),
         page : Joi.string(),
-        limit: Joi.string()
+        limit: Joi.string(),
+
+        name : Joi.string(),
+        price: Joi.number(),
+        buy_price:Joi.number(),
+        cat_id: Joi.string(),
+        store_id: Joi.string(),
+        count: Joi.number(),
+        description: Joi.string(),
+        image: Joi.string()
+    })
+}
+
+const getBusinessProductSchema = {
+    query: Joi.object({
+        page : Joi.string(),
+        limit: Joi.string(),
+
+        name : Joi.string(),
+        price: Joi.number(),
+        buy_price:Joi.number(),
+        cat_id: Joi.string(),
+        store_id: Joi.string(),
+        count: Joi.number(),
+        description: Joi.string(),
+        image: Joi.string()
     })
 }
 
@@ -46,7 +72,8 @@ module.exports = {
     productSchema,
     getProductSchema,
     deleteProductSchema,
-    putProductSchema
+    putProductSchema,
+    getBusinessProductSchema
 }
 
 
