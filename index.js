@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require("cors");
 const morgan = require("morgan");
 const db = require('./infrastructure/db');
 const apiRouter = require('./router/routing');
@@ -9,6 +10,13 @@ const {ValidationError} = require('express-validation');
 const app = express();
 app.use(bodyParser.json());
 app.use(morgan('combined'))
+
+app.use(cors({
+    origin: ["*", "http://localhost:3000", "http://192.168.1.172:3000"],
+    methods: ["POST", "DELETE", "PUT"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 const PORT = process.env.DEV_PORT || 5500;
 
 //initializing database for connecting and starting server

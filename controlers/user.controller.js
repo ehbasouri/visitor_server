@@ -61,7 +61,7 @@ async function login(req, res, next) {
                 // refreshToken
             });
         } else {
-            res.send('Username or password incorrect');
+            res.status(404).json({message: "Username dosen't find"});
         }
     } catch (error) {
         next(error);

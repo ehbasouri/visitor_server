@@ -6,30 +6,35 @@ const {validate} = require('express-validation');
 const authenticateJWT = require('../middleware/authentication');
 const authorization = require('../middleware/authorization');
 
-//controller
+//controllers
+//user
 const {
     register, 
     login, 
     getUserInfo, 
     updateUserInfo,
     getUsersController} = require('../controlers/user.controller');
+//business
 const {
     registerBusinessController,
     loginBusinessController,
     getBusinessInfoController,
     getBusinessController,
     updateBusinessInfoController} = require('../controlers/business.controller');
+//category
 const { 
     inserCategoryController,
     getCategoriesController,
     getBusinessCategoriesController,
     deleteCategoriesController,
     putCategoriesController } = require('../controlers/category,controller');
+//controller
 const { 
     inserStoreController,
     getStoreController,
     deleteStoreController,
     putStoreController } = require('../controlers/store.controller');
+//product
 const { 
     inserProductController,
     getProductController,
@@ -37,23 +42,28 @@ const {
     getBusinessProductController,
     putProductController } = require('../controlers/product.controller');
 
-//validator
+
+//validators
+//user
 const { 
     userSchema, 
     loginSchema, 
     putUserSchema,
     getUsersSchema } = require('../middleware/user.validator');
+//category
 const { 
     categorySchema,
     getCategorySchema,
     getBusinessCategorySchema,
     deleteCategorySchema,
     putCategorySchema } = require('../middleware/category.validator');
+//store
 const { 
     storeSchema,
     getStoreSchema,
     deleteStoreSchema,
     putStoreSchema } = require('../middleware/store.validator');
+//product
 const { 
     productSchema,
     getProductSchema,
