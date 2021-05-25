@@ -37,7 +37,8 @@ const deleteCategorySchema = {
 
 const putCategorySchema = {
     body: Joi.object({
-        name : Joi.string().required()
+        name : Joi.string().required(),
+        edge : Joi.boolean().required()
     }),
     query: Joi.object({
         catId : Joi.string().required()
