@@ -2,17 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require('path');
 const db = require('./infrastructure/db');
 const apiRouter = require('./router/routing');
 require('dotenv').config();
 const {ValidationError} = require('express-validation');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 
 const app = express();
 app.use(bodyParser.json());
 app.use(morgan('combined'))
 
 app.use(cors({
-    origin: ["*", "http://localhost:3000", "http://192.168.1.172:3000"],
+    origin: ["*", "http://localhost:3000", "http://192.168.1.108:3000", "http://192.168.1.108:5000"],
     methods: ["POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -27,7 +30,16 @@ db.connect(`${process.env.DB_HOST}/${process.env.DB_NAME}`, (err) => {
     }
 });
 
+
+app.use(express.static('uploads'))
+// app.use('/static', express.static('public'))
+
+app.post('/file', upload.single('file'), function (req, res, next) {
+    res.status(200).json(req.file);
+})
+
 app.use('/api', apiRouter);
+
 
 
 app.use(function (err, req, res, next) {
@@ -38,6 +50,8 @@ app.use(function (err, req, res, next) {
     console.log(err);
     return res.status(500).json(err)
 });
+
+
 
 app.listen( PORT, () => {
     console.log('Authentication service started on port '+ PORT);

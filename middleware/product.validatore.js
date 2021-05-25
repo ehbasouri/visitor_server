@@ -42,7 +42,8 @@ const getBusinessProductSchema = {
         store_id: Joi.string(),
         count: Joi.number(),
         description: Joi.string(),
-        image: Joi.string()
+        image: Joi.string(),
+        _id: Joi.string()
     })
 }
 
