@@ -28,16 +28,6 @@ const ProductsSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    created_at: {
-        type: Date,
-        required: true,
-        default: new Date()
-    },
-    updated_at: {
-        type: Date,
-        required: true,
-        default: new Date()
-    },
     business_id: {
         type: String,
         required: true
@@ -48,7 +38,7 @@ const ProductsSchema = new mongoose.Schema({
     image: {
         type: String
     }
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const Products = mongoose.model('products', ProductsSchema);
 

@@ -41,6 +41,11 @@ const {
     deleteProductController,
     getBusinessProductController,
     putProductController } = require('../controlers/product.controller');
+//product
+const { 
+    inserOrderController,
+    getOrderController,
+    putOrderController } = require('../controlers/order.controller');
 
 
 //validators
@@ -70,6 +75,13 @@ const {
     deleteProductSchema,
     putProductSchema, 
     getBusinessProductSchema} = require('../middleware/product.validatore');
+
+//order
+const { 
+    orderSchema,
+    getClientOrderSchema,
+    getBusinessOrderSchema,
+    putOrderSchema} = require('../middleware/order.validator');
 
 //user
 apiRouter.post('/register', validate(userSchema, {}, {}), register);
@@ -104,6 +116,13 @@ apiRouter.get('/product', authenticateJWT, validate(getProductSchema, {}, {}), g
 apiRouter.get('/business/product', authenticateJWT, authorization, validate(getBusinessProductSchema, {}, {}), getBusinessProductController );
 apiRouter.delete('/business/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
 apiRouter.put('/business/product', authenticateJWT, authorization, validate(putProductSchema, {}, {}), putProductController );
+
+//product
+apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), inserOrderController);
+apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {}, {}), getOrderController );
+apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
+apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), putOrderController );
+
 
 // apiRouter.delete('/product/:id', Controller.deleteProduct);
 // apiRouter.put('/product/:id', validateRequest.checkProduct, validateRequest.productValidator, Controller.updateProduct);

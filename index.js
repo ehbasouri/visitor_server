@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const morgan = require("morgan");
-const path = require('path');
 const db = require('./infrastructure/db');
 const apiRouter = require('./router/routing');
 require('dotenv').config();

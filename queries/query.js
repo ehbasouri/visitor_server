@@ -1,5 +1,3 @@
-const Joi = require("joi");
-
 const queries = {
     Model: null,
     insertQuery (data) {
@@ -19,7 +17,7 @@ const queries = {
         return this.Model.findOneAndDelete(data)
     },
     putQuery (_id, data) {
-        return this.Model.findOneAndUpdate({_id}, data)
+        return this.Model.findOneAndUpdate({_id},data)
     }
   };
 

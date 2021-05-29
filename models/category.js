@@ -18,7 +18,7 @@ const CategorySchema = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const Category = mongoose.model('category', CategorySchema);
 

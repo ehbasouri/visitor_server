@@ -34,18 +34,8 @@ const UserSchema = new mongoose.Schema({
     },
     avatar: {
         type: String
-    },
-    created_at: {
-        type: Date,
-        default: new Date(),
-        required: true
-    },
-    updated_at: {
-        type: Date,
-        required: true,
-        default: new Date()
     }
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const User = mongoose.model('User', UserSchema);
 
