@@ -78,7 +78,11 @@ async function getBusinessInfoController(req, res, next) {
         delete rawUser.password;
 
         if (user) {
-            return res.json({user});
+            const accessToken = jwtCreation(rawUser)
+            return res.json({
+                user: rawUser,
+                accessToken
+            });
         } else {
             res.status(404).json({
                 message: "user dosen't exist"
@@ -103,7 +107,8 @@ async function getBusinessController(req, res, next) {
 async function updateBusinessInfoController(req, res, next) {
     try {
         const user = await businessQuery.putQuery(req.user._id, req.body) 
-        return res.json({user});
+        next();
+        // return res.json({user});
     } catch (error) {
         next(error);
     }

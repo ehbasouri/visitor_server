@@ -10,6 +10,8 @@ const orderSchema = {
         client_id: Joi.string().required(),
         business: Joi.object().required(),
         client: Joi.object().required(),
+        buy_price: Joi.number(),
+        status: Joi.string()
     }),
 }
 
@@ -43,7 +45,8 @@ const putOrderSchema = {
         price: Joi.number(),
         discount:Joi.number(),
         comment: Joi.string(),
-        status: Joi.string()
+        status: Joi.string(),
+        buy_price: Joi.number()
     }),
     query: Joi.object({
         id : Joi.string().required()

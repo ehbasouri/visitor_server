@@ -55,6 +55,12 @@ const {
     loginSchema, 
     putUserSchema,
     getUsersSchema } = require('../middleware/user.validator');
+//business
+const { 
+    businessSchema, 
+    businessLoginSchema, 
+    putBusinessSchema,
+    getBusinesssSchema } = require('../middleware/business.validator');
 //category
 const { 
     categorySchema,
@@ -87,15 +93,15 @@ const {
 apiRouter.post('/register', validate(userSchema, {}, {}), register);
 apiRouter.post('/login', validate(loginSchema, {}, {}), login);
 apiRouter.get('/getuserinfo', authenticateJWT, getUserInfo);
-apiRouter.put('/user', authenticateJWT, validate(putUserSchema, {}, {}), updateUserInfo);
+apiRouter.put('/user', authenticateJWT, validate(putUserSchema, {}, {}), updateUserInfo, getUserInfo);
 apiRouter.get('/business/getusers', authenticateJWT, authorization, validate(getUsersSchema, {}, {}), getUsersController);
 
 //business
-apiRouter.post('/business/register', validate(userSchema, {}, {}), registerBusinessController);
-apiRouter.post('/business/login', validate(loginSchema, {}, {}), loginBusinessController);
+apiRouter.post('/business/register', validate(businessSchema, {}, {}), registerBusinessController);
+apiRouter.post('/business/login', validate(businessLoginSchema, {}, {}), loginBusinessController);
 apiRouter.get('/business/getinfo', authenticateJWT, getBusinessInfoController);
-apiRouter.get('/business', authenticateJWT, validate(getUsersSchema, {}, {}), getBusinessController);
-apiRouter.put('/business', authenticateJWT, validate(putUserSchema, {}, {}), updateBusinessInfoController);
+apiRouter.get('/business', authenticateJWT, validate(getBusinesssSchema, {}, {}), getBusinessController);
+apiRouter.put('/business', authenticateJWT, validate(putBusinessSchema, {}, {}), updateBusinessInfoController, getBusinessInfoController);
 
 //category
 apiRouter.post('/business/category', authenticateJWT, authorization, validate(categorySchema, {}, {}), inserCategoryController);

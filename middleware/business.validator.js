@@ -1,6 +1,6 @@
 const {Joi} = require("express-validation");
 
-const userSchema = {
+const businessSchema = {
     body: Joi.object({
         username : Joi.string().required(),
         password: Joi.string()
@@ -12,11 +12,12 @@ const userSchema = {
         phone: Joi.string(),
         mobile: Joi.string(),
         avatar: Joi.string(),
-        role: Joi.string()
+        role: Joi.string(),
+        sign_url: Joi.string()
     }),
 }
 
-const putUserSchema = {
+const putBusinessSchema = {
     body: Joi.object({
         email : Joi.string().email(),
         name : Joi.string(),
@@ -24,11 +25,12 @@ const putUserSchema = {
         phone: Joi.string(),
         mobile: Joi.string(),
         avatar: Joi.string(),
-        role: Joi.string()
+        role: Joi.string(),
+        sign_url: Joi.string()
     }),
 }
 
-const loginSchema = {
+const businessLoginSchema = {
     body: Joi.object({
         username : Joi.string().required(),
         password: Joi.string()
@@ -37,7 +39,7 @@ const loginSchema = {
     }),
 }
 
-const getUsersSchema = {
+const getBusinesssSchema = {
     query: Joi.object({
         page : Joi.string(),
         limit: Joi.string(),
@@ -50,13 +52,13 @@ const getUsersSchema = {
         mobile: Joi.string(),
         avatar: Joi.string(),
         role: Joi.string(),
-        _id: Joi.string()
+        sign_url: Joi.string()
     })
 }
 
 module.exports = {
-    userSchema,
-    loginSchema,
-    getUsersSchema,
-    putUserSchema
+    businessSchema,
+    businessLoginSchema,
+    getBusinesssSchema,
+    putBusinessSchema
 }

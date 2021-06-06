@@ -78,7 +78,11 @@ async function getUserInfo(req, res, next) {
         delete rawUser.password;
 
         if (user) {
-            return res.json({user});
+            const accessToken = jwtCreation(rawUser)
+            return res.json({
+                accessToken,
+                user: rawUser
+            });
         } else {
             res.status(404).json({
                 message: "user dosen't exist"
@@ -103,7 +107,8 @@ async function getUsersController(req, res, next) {
 async function updateUserInfo(req, res, next) {
     try {
         const user = await userQuery.putQuery(req.user._id, req.body) 
-        return res.json({user});
+        next()
+        // return res.json({user});
     } catch (error) {
         next(error);
     }

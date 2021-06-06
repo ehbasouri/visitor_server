@@ -10,6 +10,9 @@ const OrderSchema = new mongoose.Schema({
     price:{
         type: Number
     },
+    buy_price:{
+        type: Number
+    },
     updated_at: {
         type: Date,
         required: true,
