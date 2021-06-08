@@ -14,8 +14,12 @@ async function inserOrderController(req, res, next) {
 }
 
 async function getOrderController(req, res, next) {
+    const fromDate = req.query.fromDate
+    const toDate = req.query.toDate
+    delete req.query.fromDate
+    delete req.query.toDate
     try {
-        const order = await orderQueries.getQuery(req.query, req.query.page, req.query.limit);
+        const order = await orderQueries.getQuery(req.query, req.query.page, req.query.limit, null, fromDate, toDate);
         return res.status(200).json(order)
     } catch (error) {
         next(error);

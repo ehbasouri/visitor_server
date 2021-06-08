@@ -2,7 +2,6 @@
 const queries = {
     Model: "test",
     insertQuery : (data) => {
-        console.log("this.Model", this.Model)
         const newCategory = new this.Model(data);
         return newCategory.save()
     },
@@ -18,5 +17,3 @@ const queries = {
 }
 
 const catQuery = Object.create(queries);
-
-console.log("catQuery", catQuery.Model, queries);

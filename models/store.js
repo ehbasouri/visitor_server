@@ -6,7 +6,7 @@ const StoreSchema = new mongoose.Schema({
         lowercase: true,
         required: true
     },
-    business_id: {
+    business_id: { 
         type: String,
         required: true
     }

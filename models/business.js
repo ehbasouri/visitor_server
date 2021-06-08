@@ -37,6 +37,11 @@ const BusinessSchema = new mongoose.Schema({
     },
     sign_url: {
         type: String
+    },
+    is_active : {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, { timestamps: { createdAt: 'created_at' } });
 

@@ -23,7 +23,9 @@ const getBusinessOrderSchema = {
         page : Joi.string(),
         limit: Joi.string(),
         _id: Joi.string(),
-        status: Joi.string()
+        status: Joi.string(),
+        fromDate: Joi.date(),
+        toDate: Joi.date()
     })
 }
 
@@ -35,7 +37,9 @@ const getClientOrderSchema = {
         page : Joi.string(),
         limit: Joi.string(),
         _id: Joi.string(),
-        status: Joi.string()
+        status: Joi.string(),
+        fromDate: Joi.date(),
+        toDate: Joi.date()
     })
 }
 

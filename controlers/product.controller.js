@@ -15,7 +15,9 @@ async function inserProductController(req, res, next) {
 
 async function getProductController(req, res, next) {
     try {
-        const product = await productQueries.getQuery(req.query, req.query.page, req.query.limit);
+        const text = req.query.name
+        delete req.query.name
+        const product = await productQueries.getQuery(req.query, req.query.page, req.query.limit, text);
         return res.status(200).json(product)
     } catch (error) {
         next(error);
@@ -24,7 +26,9 @@ async function getProductController(req, res, next) {
 
 async function getBusinessProductController(req, res, next) {
     try {
-        const product = await productQueries.getQuery({ business_id: req.user._id, ...req.query}, req.query.page, req.query.limit);
+        const text = req.query.name
+        delete req.query.name
+        const product = await productQueries.getQuery({ business_id: req.user._id, ...req.query}, req.query.page, req.query.limit, text);
         return res.status(200).json(product)
     } catch (error) {
         next(error);
@@ -49,11 +53,30 @@ async function putProductController(req, res, next) {
     }
 }
 
+async function updateProductsInStore(req, res, next) {
+    console.log("req.body.status : ", req.body.status)
+    if(req.body.status !== "archive"){
+        next()
+    }else{
+        const products = JSON.parse(JSON.stringify(req.body.products))
+        try {
+            products.forEach(async product => {
+                const count = product.count - product.countInBasket;
+                await productQueries.putQuery(product._id, { count });
+            });
+            next()
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+
 module.exports = {
     inserProductController,
     getProductController,
     deleteProductController,
     putProductController,
-    getBusinessProductController
+    getBusinessProductController,
+    updateProductsInStore
 }
 

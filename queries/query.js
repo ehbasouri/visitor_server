@@ -4,11 +4,17 @@ const queries = {
         const newCategory = new this.Model(data);
         return newCategory.save()
     },
-    getQuery (data, page, limit) {
-        const query = JSON.parse(JSON.stringify(data));
+    getQuery (data, page, limit, text, fromDate, toDate) {
+        var query = JSON.parse(JSON.stringify(data));
         delete query.page;
         delete query.limit;
-        return this.Model.find(query, null , { skip: Number(page), limit: Number(limit) })
+        if(text){
+            query = {...query, $text: {$search: text}}
+        }
+        if(fromDate){
+            query = {...query, created_at: { $gte: fromDate, $lte: toDate } }
+        }
+        return this.Model.find(query, null , { skip: Number(page), limit: Number(limit) }).sort({created_at: -1})
     },
     getOneQuery (data) {
         return this.Model.findOne(data)

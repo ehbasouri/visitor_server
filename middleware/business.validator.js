@@ -1,5 +1,7 @@
 const {Joi} = require("express-validation");
 
+const mobile_regex = /09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}/
+
 const businessSchema = {
     body: Joi.object({
         username : Joi.string().required(),
@@ -19,14 +21,15 @@ const businessSchema = {
 
 const putBusinessSchema = {
     body: Joi.object({
-        email : Joi.string().email(),
+        email : Joi.string().email().allow("", null),
         name : Joi.string(),
         address: Joi.string(),
-        phone: Joi.string(),
-        mobile: Joi.string(),
+        phone: Joi.string().allow("", null),
+        mobile: Joi.string().regex(mobile_regex),
         avatar: Joi.string(),
         role: Joi.string(),
-        sign_url: Joi.string()
+        sign_url: Joi.string(),
+        is_active: Joi.boolean()
     }),
 }
 
@@ -52,7 +55,8 @@ const getBusinesssSchema = {
         mobile: Joi.string(),
         avatar: Joi.string(),
         role: Joi.string(),
-        sign_url: Joi.string()
+        sign_url: Joi.string(),
+        is_active: Joi.boolean()
     })
 }
 

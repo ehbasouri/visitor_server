@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(morgan('combined'))
 
 app.use(cors({
-    origin: ["*", "http://localhost:3000", "http://192.168.1.108:3000", "http://192.168.1.108:5000"],
+    origin: ["*", "http://localhost:3000", "http://ehsan2.ir", "https://ehsan2.ir", "http://192.168.1.108:3000", "http://192.168.1.108:5000", "http://localhost:5000"],
     methods: ["POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));

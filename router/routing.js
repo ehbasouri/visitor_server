@@ -40,7 +40,8 @@ const {
     getProductController,
     deleteProductController,
     getBusinessProductController,
-    putProductController } = require('../controlers/product.controller');
+    putProductController,
+    updateProductsInStore } = require('../controlers/product.controller');
 //product
 const { 
     inserOrderController,
@@ -127,7 +128,7 @@ apiRouter.put('/business/product', authenticateJWT, authorization, validate(putP
 apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), inserOrderController);
 apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {}, {}), getOrderController );
 apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
-apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), putOrderController );
+apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), updateProductsInStore , putOrderController );
 
 
 // apiRouter.delete('/product/:id', Controller.deleteProduct);
