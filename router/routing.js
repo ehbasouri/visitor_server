@@ -124,8 +124,8 @@ apiRouter.get('/business/product', authenticateJWT, authorization, validate(getB
 apiRouter.delete('/business/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
 apiRouter.put('/business/product', authenticateJWT, authorization, validate(putProductSchema, {}, {}), putProductController );
 
-//product
-apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), inserOrderController);
+//order
+apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), updateProductsInStore, inserOrderController);
 apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {}, {}), getOrderController );
 apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
 apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), updateProductsInStore , putOrderController );

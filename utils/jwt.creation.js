@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 function jwtCreation(data) {
-    return jwt.sign(data, process.env.ACCESSTOKEN_SECRET_KEY );
+    return jwt.sign(data, "123!@#123!@#" ); 
 }
 
 module.exports = {

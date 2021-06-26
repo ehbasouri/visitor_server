@@ -22,7 +22,7 @@ app.use(cors({
 const PORT = process.env.DEV_PORT || 5500;
 
 //initializing database for connecting and starting server
-db.connect(`${process.env.DB_HOST}/${process.env.DB_NAME}`, (err) => {
+db.connect("mongodb://ehsanir_ehsan:EhsanB69EhsanB69@ehsan2.ir:27017/ehsanir_db", (err) => {
     if (err) {
         console.log(err.message, err.stack, 'can not connect to database server');
         process.exit(-1);
