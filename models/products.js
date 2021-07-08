@@ -38,7 +38,7 @@ const ProductsSchema = new mongoose.Schema({
     image: {
         type: String
     }
-}, { timestamps: { createdAt: 'created_at' } });
+}, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at"  } });
 
 ProductsSchema.index({name: 'text'});
 

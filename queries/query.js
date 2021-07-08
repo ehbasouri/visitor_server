@@ -12,7 +12,7 @@ const queries = {
             query = {...query, $text: {$search: text}}
         }
         if(fromDate){
-            query = {...query, created_at: { $gte: fromDate, $lte: toDate } }
+            query = {...query, updated_at: { $gte: fromDate, $lte: toDate } }
         }
         return this.Model.find(query, null , { skip: Number(page), limit: Number(limit) }).sort({created_at: -1})
     },

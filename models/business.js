@@ -43,7 +43,7 @@ const BusinessSchema = new mongoose.Schema({
         required: true,
         default: false
     }
-}, { timestamps: { createdAt: 'created_at' } });
+}, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 
 const Business = mongoose.model('business', BusinessSchema);
 

@@ -1,18 +1,13 @@
 const mongoose = require('mongoose');
 
 const CategorySchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
-        lowercase: true,
         required: true
     },
-    parId: {
+    sub_title: {
         type: String,
         require: true,
-        default: "root"
-    },
-    edge: {
-        type: Boolean
     },
     business_id: {
         type: String,

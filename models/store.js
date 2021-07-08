@@ -10,7 +10,7 @@ const StoreSchema = new mongoose.Schema({
         type: String,
         required: true
     }
-}, { timestamps: { createdAt: 'created_at' } });
+}, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at"  } });
 
 const Store = mongoose.model('store', StoreSchema);
 
