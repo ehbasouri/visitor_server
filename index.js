@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const morgan = require("morgan");
-const db = require('./infrastructure/db');
-const apiRouter = require('./router/routing');
+const db = require('./src/infrastructure/db');
+const apiRouter = require('./src/router/routing');
 require('dotenv').config();
 const {ValidationError} = require('express-validation');
 var multer  = require('multer')

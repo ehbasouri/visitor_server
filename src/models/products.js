@@ -37,6 +37,11 @@ const ProductsSchema = new mongoose.Schema({
     },
     image: {
         type: String
+    },
+    is_private: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at"  } });
 

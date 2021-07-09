@@ -28,12 +28,19 @@ const {
     getBusinessCategoriesController,
     deleteCategoriesController,
     putCategoriesController } = require('../controlers/category,controller');
-//controller
+//store
 const { 
     inserStoreController,
     getStoreController,
     deleteStoreController,
     putStoreController } = require('../controlers/store.controller');
+//cbr
+const { 
+    inserCbrController,
+    getCbrController,
+    deleteCbrController,
+    putCbrController } = require('../controlers/cbr.controller');
+
 //product
 const { 
     inserProductController,
@@ -81,6 +88,13 @@ const {
     getStoreSchema,
     deleteStoreSchema,
     putStoreSchema } = require('../middleware/store.validator');
+//cbr
+const { 
+    cbrSchema,
+    getCbrSchema,
+    deleteCbrSchema,
+    putCbrSchema } = require('../middleware/cbr.validator');
+
 //product
 const { 
     productSchema,
@@ -140,7 +154,14 @@ apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {
 apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
 apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore , putOrderController );
 
+//analytics
 apiRouter.get('/analytics', authenticateJWT, validate(getAnalyticsSchema, {}, {}), getAnalyticsController );
+
+//cbr
+apiRouter.post('/business/cbr', authenticateJWT, authorization, validate(cbrSchema, {}, {}), inserCbrController);
+apiRouter.get('/cbr', authenticateJWT, validate(getCbrSchema, {}, {}), getCbrController );
+apiRouter.delete('/business/cbr', authenticateJWT, authorization, validate(deleteCbrSchema, {}, {}), deleteCbrController );
+apiRouter.put('/business/cbr', authenticateJWT, authorization, validate(putCbrSchema, {}, {}), putCbrController );
 
 // apiRouter.delete('/product/:id', Controller.deleteProduct);
 // apiRouter.put('/product/:id', validateRequest.checkProduct, validateRequest.productValidator, Controller.updateProduct);

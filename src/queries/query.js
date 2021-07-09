@@ -4,7 +4,7 @@ const queries = {
         const newCategory = new this.Model(data);
         return newCategory.save()
     },
-    getQuery (data, page, limit, text, fromDate, toDate) {
+    getQuery (data, page, limit, text, fromDate, toDate, sort = {created_at: -1} ) {
         var query = JSON.parse(JSON.stringify(data));
         delete query.page;
         delete query.limit;
@@ -14,7 +14,7 @@ const queries = {
         if(fromDate){
             query = {...query, updated_at: { $gte: fromDate, $lte: toDate } }
         }
-        return this.Model.find(query, null , { skip: Number(page), limit: Number(limit) }).sort({created_at: -1})
+        return this.Model.find(query, null , { skip: Number(page), limit: Number(limit) }).sort(sort)
     },
     getOneQuery (data) {
         return this.Model.findOne(data)

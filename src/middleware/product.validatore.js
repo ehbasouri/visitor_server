@@ -9,7 +9,8 @@ const productSchema = {
         store_id: Joi.string().required(),
         count: Joi.number().required(),
         description: Joi.string(),
-        image: Joi.string()
+        image: Joi.string(),
+        is_private: Joi.boolean()
     }),
 }
 
@@ -26,7 +27,8 @@ const getProductSchema = {
         store_id: Joi.string(),
         count: Joi.number(),
         description: Joi.string(),
-        image: Joi.string()
+        image: Joi.string(),
+        is_private: Joi.boolean()
     })
 }
 
@@ -43,7 +45,8 @@ const getBusinessProductSchema = {
         count: Joi.number(),
         description: Joi.string(),
         image: Joi.string(),
-        _id: Joi.string()
+        _id: Joi.string(),
+        is_private: Joi.boolean()
     })
 }
 
@@ -62,7 +65,8 @@ const putProductSchema = {
         store_id: Joi.string().required(),
         count: Joi.number().required(),
         description: Joi.string(),
-        image: Joi.string()
+        image: Joi.string(),
+        is_private: Joi.boolean()
     }),
     query: Joi.object({
         id : Joi.string().required()
