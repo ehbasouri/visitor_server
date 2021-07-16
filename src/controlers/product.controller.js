@@ -53,16 +53,44 @@ async function putProductController(req, res, next) {
     }
 }
 
+const mergeList = (arr1 = [], arr2 = []) => {
+    const a1 = JSON.parse(JSON.stringify(arr1))
+    const a2 = JSON.parse(JSON.stringify(arr2))
+    const result = [...a2];
+    a1.map(item=>{
+        const index = a2.findIndex(item2=>item._id === item2._id)
+        if (index > -1) {
+            result[index].countInBasket = result[index].countInBasket + item.countInBasket
+            result[index].unitCountInBasket = result[index].unitCountInBasket + item.unitCountInBasket
+        } else {
+            result.push(item)
+        }
+    })
+    return result
+}
+
 async function updateProductsInStore(req, res, next) {
-    console.log("req.body.status : ", req.body.status)
     if(req.body.status !== "archive"){
         next()
     }else{
-        const products = JSON.parse(JSON.stringify(req.body.products))
+        const products = mergeList(req.body.products, req.body.gift);
         try {
             products.forEach(async product => {
-                const count = product.count - product.countInBasket;
-                await productQueries.putQuery(product._id, { count });
+                var count = product.count - product.countInBasket;
+                const data = {
+                    count
+                }
+                if( product.unitCountInBasket > 0 ){
+                    const current_product = await productQueries.getQuery({_id: product._id});
+                    if(current_product && current_product[0]){
+                        const count_to_decrease = current_product[0].count_to_decrease +  product.unitCountInBasket;
+                        count = count - (Math.floor(count_to_decrease / product.count_in_box));
+                        data.count = count;
+                        data.count_to_decrease = count_to_decrease % product.count_in_box
+                    }
+                }
+
+                await productQueries.putQuery(product._id, data);
             });
             next()
         } catch (error) {
@@ -71,12 +99,31 @@ async function updateProductsInStore(req, res, next) {
     }
 }
 
+
+// async function putAllController(req, res, next) {
+//     try {
+//         const order = await productQueries.getQuery({});
+//         order.map( async (item)=>{
+//             const data = {
+//                 count_in_box: 10,
+//                 count_to_decrease: 0,
+//                 unit_price:  Math.floor(item.price / 10)
+//             }
+//             const result = await productQueries.putQuery(item._id, data);
+//         })
+//         return res.status(200).json({result: "ok"})
+//     } catch (error) {
+//         next(error);
+//     }
+// } 
+
 module.exports = {
     inserProductController,
     getProductController,
     deleteProductController,
     putProductController,
     getBusinessProductController,
-    updateProductsInStore
+    updateProductsInStore,
+    // putAllController
 }
 

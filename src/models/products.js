@@ -6,6 +6,21 @@ const ProductsSchema = new mongoose.Schema({
         lowercase: true,
         required: true
     },
+    count_in_box: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    count_to_decrease: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    unit_price: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     price: {
         type: Number,
         required: true,

@@ -8,9 +8,12 @@ const productSchema = {
         cat_id: Joi.string().required(),
         store_id: Joi.string().required(),
         count: Joi.number().required(),
+        count_in_box: Joi.number().required(),
         description: Joi.string(),
         image: Joi.string(),
-        is_private: Joi.boolean()
+        is_private: Joi.boolean(),
+        unit_price: Joi.number().required()
+        
     }),
 }
 
@@ -64,9 +67,11 @@ const putProductSchema = {
         cat_id: Joi.string().required(),
         store_id: Joi.string().required(),
         count: Joi.number().required(),
+        count_in_box: Joi.number().required(),
         description: Joi.string(),
         image: Joi.string(),
-        is_private: Joi.boolean()
+        is_private: Joi.boolean(),
+        unit_price: Joi.number().required()
     }),
     query: Joi.object({
         id : Joi.string().required()

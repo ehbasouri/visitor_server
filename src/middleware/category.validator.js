@@ -4,7 +4,8 @@ const categorySchema = {
     body: Joi.object({
         name : Joi.string().required(),
         parId : Joi.string().required(),
-        edge : Joi.boolean().required()
+        edge : Joi.boolean().required(),
+        is_private: Joi.boolean()
     }),
 }
 
@@ -15,7 +16,8 @@ const getCategorySchema = {
         name : Joi.string(),
         edge : Joi.boolean(),
         page : Joi.string(),
-        limit: Joi.string()
+        limit: Joi.string(),
+        is_private: Joi.boolean()
     })
 }
 
@@ -25,7 +27,8 @@ const getBusinessCategorySchema = {
         name : Joi.string(),
         edge : Joi.boolean(),
         page : Joi.string(),
-        limit: Joi.string()
+        limit: Joi.string(),
+        is_private: Joi.boolean()
     })
 }
 
@@ -38,7 +41,8 @@ const deleteCategorySchema = {
 const putCategorySchema = {
     body: Joi.object({
         name : Joi.string().required(),
-        edge : Joi.boolean().required()
+        edge : Joi.boolean().required(),
+        is_private: Joi.boolean()
     }),
     query: Joi.object({
         catId : Joi.string().required()

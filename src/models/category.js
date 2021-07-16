@@ -17,6 +17,9 @@ const CategorySchema = new mongoose.Schema({
     business_id: {
         type: String,
         required: true
+    },
+    is_private: {
+        type: Boolean
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 

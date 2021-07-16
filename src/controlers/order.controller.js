@@ -7,7 +7,7 @@ orderQueries.Model = Order;
 async function inserOrderController(req, res, next) {
     try {
         const order = await orderQueries.insertQuery({...req.body});
-        return res.status(200).json(order)
+        return res.status(200).json(order);
     } catch (error) {
         next(error)
     }    

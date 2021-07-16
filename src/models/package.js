@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
-const OrderSchema = new mongoose.Schema({
+const PackageSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        default: ""
+    },
     products: {
         type: Array
     },
@@ -13,41 +18,26 @@ const OrderSchema = new mongoose.Schema({
     buy_price:{
         type: Number
     },
-    updated_at: {
-        type: Date,
-        required: true,
-        default: new Date()
+    business: {
+        type: Object,
+        required: true
     },
     business_id: {
         type: String,
         required: true
     },
-    business: {
-        type: Object,
-        required: true
-    },
-    client_id: {
-        type: String,
-        required: true
-    },
-    client:{
-        type: Object,
-        required: true
-    },
     comment: {
         type: String
+    },
+    gift: {
+        type: Array
     },
     status: {
         type: String,
         default: "active"
-    },
-    gift: {
-        type: Array,
-        required: true,
-        default: []
-    },
+    }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 
-const Order = mongoose.model('order', OrderSchema);
+const Package = mongoose.model('package', PackageSchema);
 
-module.exports = Order;
+module.exports = Package;

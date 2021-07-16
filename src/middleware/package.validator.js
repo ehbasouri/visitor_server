@@ -1,40 +1,39 @@
 const {Joi} = require("express-validation");
 
-const orderSchema = {
+const packageSchema = {
     body: Joi.object({
         comment: Joi.string(),
         products : Joi.array(),
         price: Joi.number().required(),
         discount:Joi.number().required(),
         business_id: Joi.string().required(),
-        client_id: Joi.string().required(),
-        business: Joi.object().required(),
-        client: Joi.object().required(),
         buy_price: Joi.number(),
         status: Joi.string(),
-        gift: Joi.array()
+        name: Joi.string(),
+        gift: Joi.array(),
+        business: Joi.object()
     }),
 }
 
-const getBusinessOrderSchema = {
+const getBusinessPackageSchema = {
     query: Joi.object({
         created_at: Joi.date(),
         business_id: Joi.string().required(),
-        client_id: Joi.string(),
         page : Joi.string(),
         limit: Joi.string(),
         _id: Joi.string(),
         status: Joi.string(),
         fromDate: Joi.date(),
+        name: Joi.string(),
         toDate: Joi.date()
     })
 }
 
-const getClientOrderSchema = {
+const getClientPackageSchema = {
     query: Joi.object({
         created_at: Joi.date(),
         business_id: Joi.string(),
-        client_id: Joi.string().required(),
+        name: Joi.string(),
         page : Joi.string(),
         limit: Joi.string(),
         _id: Joi.string(),
@@ -44,7 +43,7 @@ const getClientOrderSchema = {
     })
 }
 
-const putOrderSchema = {
+const putPackageSchema = {
     body: Joi.object({
         products : Joi.array(),
         price: Joi.number(),
@@ -52,18 +51,27 @@ const putOrderSchema = {
         comment: Joi.string(),
         status: Joi.string(),
         buy_price: Joi.number(),
-        gift: Joi.array()
+        gift: Joi.array(),
+        name: Joi.string()
     }),
     query: Joi.object({
-        id : Joi.string().required()
+        id : Joi.string().required() 
     })
 }
 
+
+const deletePackageSchema = {
+    query: Joi.object({
+        id : Joi.string().required()
+    }),
+}
+
 module.exports = {
-    orderSchema,
-    getBusinessOrderSchema,
-    getClientOrderSchema,
-    putOrderSchema
+    packageSchema,
+    getBusinessPackageSchema,
+    getClientPackageSchema,
+    putPackageSchema,
+    deletePackageSchema
 }
 
 

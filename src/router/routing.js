@@ -27,7 +27,8 @@ const {
     getCategoriesController,
     getBusinessCategoriesController,
     deleteCategoriesController,
-    putCategoriesController } = require('../controlers/category,controller');
+    putCategoriesController,
+    putAllCategoryController } = require('../controlers/category,controller');
 //store
 const { 
     inserStoreController,
@@ -40,6 +41,11 @@ const {
     getCbrController,
     deleteCbrController,
     putCbrController } = require('../controlers/cbr.controller');
+//cbr
+const { 
+    inserFcmTokenController,
+    getFcmTokenController,
+    deleteFcmTokenController } = require('../controlers/fcmToken.controller');
 
 //product
 const { 
@@ -48,12 +54,19 @@ const {
     deleteProductController,
     getBusinessProductController,
     putProductController,
+    // putAllController,
     updateProductsInStore } = require('../controlers/product.controller');
-//product
+//order
 const { 
     inserOrderController,
     getOrderController,
     putOrderController } = require('../controlers/order.controller');
+//package
+const { 
+    insertPackageController,
+    getPackageController,
+    deletPackageController,
+    putPackageController } = require('../controlers/package.controller');
 
 //analytics
 const { 
@@ -94,6 +107,11 @@ const {
     getCbrSchema,
     deleteCbrSchema,
     putCbrSchema } = require('../middleware/cbr.validator');
+//fcm
+const { 
+    fcmTokenSchema,
+    getFcmTokenSchema,
+    deleteFcmTokenSchema } = require('../middleware/fcmToken.validator');
 
 //product
 const { 
@@ -110,9 +128,19 @@ const {
     getBusinessOrderSchema,
     putOrderSchema} = require('../middleware/order.validator');
 
+//order
+const { 
+    packageSchema,
+    getClientPackageSchema,
+    getBusinessPackageSchema,
+    deletePackageSchema,
+    putPackageSchema} = require('../middleware/package.validator');
+
 //analytics
 const { 
     getAnalyticsSchema} = require('../middleware/analytics.validator');
+    
+const { insertOrderNotification } = require('../notification/orderNotifications');
 
 //user
 apiRouter.post('/register', validate(userSchema, {}, {}), register);
@@ -147,12 +175,20 @@ apiRouter.get('/product', authenticateJWT, validate(getProductSchema, {}, {}), g
 apiRouter.get('/business/product', authenticateJWT, authorization, validate(getBusinessProductSchema, {}, {}), getBusinessProductController );
 apiRouter.delete('/business/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
 apiRouter.put('/business/product', authenticateJWT, authorization, validate(putProductSchema, {}, {}), putProductController );
+// apiRouter.put('/put/product', putAllController );
 
 //order
-apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore, inserOrderController);
+apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore, insertOrderNotification, inserOrderController);
 apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {}, {}), getOrderController );
 apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
 apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore , putOrderController );
+
+//package
+apiRouter.post('/package', authenticateJWT, authorization, validate(packageSchema, {}, {}), insertPackageController);
+apiRouter.get('/client/package', authenticateJWT, validate(getClientPackageSchema, {}, {}), getPackageController );
+apiRouter.get('/business/package', authenticateJWT, authorization, validate(getBusinessPackageSchema, {}, {}), getPackageController );
+apiRouter.put('/package', authenticateJWT, authorization, validate(putPackageSchema, {}, {}) , putPackageController );
+apiRouter.delete('/package', authenticateJWT, authorization, validate(deletePackageSchema, {}, {}) , deletPackageController );
 
 //analytics
 apiRouter.get('/analytics', authenticateJWT, validate(getAnalyticsSchema, {}, {}), getAnalyticsController );
@@ -162,6 +198,12 @@ apiRouter.post('/business/cbr', authenticateJWT, authorization, validate(cbrSche
 apiRouter.get('/cbr', authenticateJWT, validate(getCbrSchema, {}, {}), getCbrController );
 apiRouter.delete('/business/cbr', authenticateJWT, authorization, validate(deleteCbrSchema, {}, {}), deleteCbrController );
 apiRouter.put('/business/cbr', authenticateJWT, authorization, validate(putCbrSchema, {}, {}), putCbrController );
+
+//fcm
+apiRouter.post('/fcm', authenticateJWT, validate(fcmTokenSchema, {}, {}), inserFcmTokenController);
+apiRouter.get('/fcm', authenticateJWT, getFcmTokenController );
+apiRouter.delete('/fcm', authenticateJWT, validate(deleteFcmTokenSchema, {}, {}), deleteFcmTokenController );
+
 
 // apiRouter.delete('/product/:id', Controller.deleteProduct);
 // apiRouter.put('/product/:id', validateRequest.checkProduct, validateRequest.productValidator, Controller.updateProduct);
