@@ -41,7 +41,21 @@ const {
     getCbrController,
     deleteCbrController,
     putCbrController } = require('../controlers/cbr.controller');
-//cbr
+//debt
+const { 
+    inserDebtController,
+    getDebtController,
+    deleteDebtController,
+    putDebtController,
+    autoUpdateDebtController,
+    backToStoreDebtController } = require('../controlers/debt.controller');
+//paied
+const { 
+    inserPaiedController,
+    getPaiedController,
+    deletePaiedController,
+    putPaiedController } = require('../controlers/paied.controller');
+//fcmToken
 const { 
     inserFcmTokenController,
     getFcmTokenController,
@@ -54,7 +68,7 @@ const {
     deleteProductController,
     getBusinessProductController,
     putProductController,
-    // putAllController,
+    backProductsToStore,
     updateProductsInStore } = require('../controlers/product.controller');
 //order
 const { 
@@ -71,7 +85,8 @@ const {
 //analytics
 const { 
     registerAndUpdateAnalytics,
-    getAnalyticsController } = require('../controlers/analytics.controller');
+    getAnalyticsController,
+    backToStoreAnalytics } = require('../controlers/analytics.controller');
 
     
 
@@ -107,6 +122,18 @@ const {
     getCbrSchema,
     deleteCbrSchema,
     putCbrSchema } = require('../middleware/cbr.validator');
+//debt
+const { 
+    debtSchema,
+    getDebtSchema,
+    deleteDebtSchema,
+    putDebtSchema } = require('../middleware/debt.validator');
+//paied
+const { 
+    paiedSchema,
+    getPaiedSchema,
+    deletePaiedSchema,
+    putPaiedSchema } = require('../middleware/paied.validator');
 //fcm
 const { 
     fcmTokenSchema,
@@ -170,7 +197,7 @@ apiRouter.delete('/business/store', authenticateJWT, authorization, validate(del
 apiRouter.put('/business/store', authenticateJWT, authorization, validate(putStoreSchema, {}, {}), putStoreController );
 
 //product
-apiRouter.post('/business/product', authenticateJWT, authorization, validate(productSchema, {}, {}), inserProductController);
+apiRouter.post('/business/product', authenticateJWT, authorization, validate(productSchema, {}, {}), inserProductController); 
 apiRouter.get('/product', authenticateJWT, validate(getProductSchema, {}, {}), getProductController );
 apiRouter.get('/business/product', authenticateJWT, authorization, validate(getBusinessProductSchema, {}, {}), getBusinessProductController );
 apiRouter.delete('/business/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
@@ -178,10 +205,10 @@ apiRouter.put('/business/product', authenticateJWT, authorization, validate(putP
 // apiRouter.put('/put/product', putAllController );
 
 //order
-apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore, insertOrderNotification, inserOrderController);
+apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore, autoUpdateDebtController, insertOrderNotification, inserOrderController);
 apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {}, {}), getOrderController );
 apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
-apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), registerAndUpdateAnalytics, updateProductsInStore , putOrderController );
+apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), registerAndUpdateAnalytics, backToStoreAnalytics, updateProductsInStore, autoUpdateDebtController, backToStoreDebtController, backProductsToStore , putOrderController );
 
 //package
 apiRouter.post('/package', authenticateJWT, authorization, validate(packageSchema, {}, {}), insertPackageController);
@@ -199,11 +226,22 @@ apiRouter.get('/cbr', authenticateJWT, validate(getCbrSchema, {}, {}), getCbrCon
 apiRouter.delete('/business/cbr', authenticateJWT, authorization, validate(deleteCbrSchema, {}, {}), deleteCbrController );
 apiRouter.put('/business/cbr', authenticateJWT, authorization, validate(putCbrSchema, {}, {}), putCbrController );
 
+//debt
+apiRouter.post('/business/debt', authenticateJWT, authorization, validate(debtSchema, {}, {}), inserDebtController);
+apiRouter.get('/debt', authenticateJWT, validate(getDebtSchema, {}, {}), getDebtController );
+apiRouter.delete('/business/debt', authenticateJWT, authorization, validate(deleteDebtSchema, {}, {}), deleteDebtController );
+apiRouter.put('/business/debt', authenticateJWT, authorization, validate(putDebtSchema, {}, {}), putDebtController );
+
 //fcm
 apiRouter.post('/fcm', authenticateJWT, validate(fcmTokenSchema, {}, {}), inserFcmTokenController);
 apiRouter.get('/fcm', authenticateJWT, getFcmTokenController );
 apiRouter.delete('/fcm', authenticateJWT, validate(deleteFcmTokenSchema, {}, {}), deleteFcmTokenController );
 
+//paied
+apiRouter.post('/business/paied', authenticateJWT, authorization, validate(paiedSchema, {}, {}), inserPaiedController);
+apiRouter.get('/paied', authenticateJWT, validate(getPaiedSchema, {}, {}), getPaiedController );
+apiRouter.delete('/business/paied', authenticateJWT, authorization, validate(deletePaiedSchema, {}, {}), deletePaiedController );
+apiRouter.put('/business/paied', authenticateJWT, authorization, validate(putPaiedSchema, {}, {}), putPaiedController );
 
 // apiRouter.delete('/product/:id', Controller.deleteProduct);
 // apiRouter.put('/product/:id', validateRequest.checkProduct, validateRequest.productValidator, Controller.updateProduct);

@@ -1,5 +1,6 @@
 const queries = require("../queries/query")
 const Product = require("../models/products");
+const Order = require("../models/order");
 
 const productQueries = Object.create(queries);
 productQueries.Model = Product;
@@ -69,27 +70,67 @@ const mergeList = (arr1 = [], arr2 = []) => {
     return result
 }
 
-async function updateProductsInStore(req, res, next) {
-    if(req.body.status !== "archive"){
+async function updateProductsInStore(req, res, next) { 
+    if(req.body.status !== "archive" ){
         next()
     }else{
         const products = mergeList(req.body.products, req.body.gift);
         try {
             products.forEach(async product => {
-                var count = product.count - product.countInBasket;
                 const data = {
-                    count
+                    count: 0
                 }
-                if( product.unitCountInBasket > 0 ){
-                    const current_product = await productQueries.getQuery({_id: product._id});
-                    if(current_product && current_product[0]){
+                const current_product = await productQueries.getQuery({_id: product._id});
+                if(current_product && current_product[0]){
+                        data.count = current_product[0].count
+                    if(product.countInBasket > 0){
+                        data.count = current_product[0].count - product.countInBasket;
+                    }
+                    
+                    if( product.unitCountInBasket > 0 ){
                         const count_to_decrease = current_product[0].count_to_decrease +  product.unitCountInBasket;
-                        count = count - (Math.floor(count_to_decrease / product.count_in_box));
-                        data.count = count;
+                        data.count = data.count - (Math.floor(count_to_decrease / product.count_in_box));
                         data.count_to_decrease = count_to_decrease % product.count_in_box
                     }
                 }
 
+                await productQueries.putQuery(product._id, data);
+            });
+            next()
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+
+async function backProductsToStore(req, res, next) { 
+    if(req.body.status !== "active" ){
+        next()
+    }else{
+        const products = mergeList(req.body.products, req.body.gift);
+        try {
+            products.forEach(async product => {
+                const data = {
+                    count: 0
+                }
+                const current_product = await productQueries.getQuery({_id: product._id});
+                if(current_product && current_product[0]){
+                        data.count = current_product[0].count
+                    if(product.countInBasket > 0){
+                        data.count = data.count + product.countInBasket;
+                    }
+                    if( product.unitCountInBasket > 0 ){
+                        const count_to_decrease = current_product[0].count_to_decrease 
+
+                        data.count = data.count + (Math.floor(product.unitCountInBasket / current_product[0].count_in_box));
+                        if(count_to_decrease < (product.unitCountInBasket % product.count_in_box)){
+                            data.count_to_decrease = (count_to_decrease + product.count_in_box ) - (product.unitCountInBasket % product.count_in_box)
+                            data.count = data.count + 1;
+                        }else {
+                            data.count_to_decrease = count_to_decrease - (product.unitCountInBasket % product.count_in_box)
+                        }
+                    }
+                }
                 await productQueries.putQuery(product._id, data);
             });
             next()
@@ -124,6 +165,7 @@ module.exports = {
     putProductController,
     getBusinessProductController,
     updateProductsInStore,
+    backProductsToStore
     // putAllController
 }
 

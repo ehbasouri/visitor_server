@@ -7,6 +7,9 @@ const OrderSchema = new mongoose.Schema({
     discount: {
         type: Number
     },
+    paied_amount: {
+        type: Number
+    },
     price:{
         type: Number
     },
@@ -46,6 +49,11 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         default: []
     },
+    is_debt: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 
 const Order = mongoose.model('order', OrderSchema);

@@ -1,10 +1,11 @@
 const queries = require("../queries/query");
 const Analytics = require("../models/Analytics");
+const Order = require("../models/order");
 
 const analyticsQuery = Object.create(queries);
 analyticsQuery.Model = Analytics;
 
-async function registerAndUpdateAnalytics(req, res, next) { 
+async function registerAndUpdateAnalytics(req, res, next) {  
     
     try {
         var fromDate = new Date();
@@ -50,6 +51,40 @@ async function registerAndUpdateAnalytics(req, res, next) {
     }
 }
 
+
+async function backToStoreAnalytics(req, res, next) {  
+    
+    try {
+        if(req.body.status !== "active"){
+            next()
+            return;
+        }
+        const currentOrder = await Order.findById(req.query.id); 
+        var fromDate = new Date(currentOrder.updated_at);
+        fromDate.setHours(0,0,0,0);
+        var toDate = new Date(currentOrder.updated_at);
+        toDate.setHours(24,0,0,0);
+        const { _id } = req.user;
+        const existAnalytics = await analyticsQuery.getQuery({business_id : _id}, null, null, null, fromDate, toDate)
+        if(existAnalytics && existAnalytics.length > 0 ){
+            const rawData = {
+                name: fromDate.toLocaleDateString(),
+                buy_price : existAnalytics[0].buy_price - req.body.buy_price,
+                price : existAnalytics[0].price - req.body.price 
+            }
+            rawData.earn = rawData.price - rawData.buy_price
+
+            const result = await analyticsQuery.putQuery(existAnalytics[0]._id, rawData)
+            next();
+            return;
+        }
+        next();
+
+    } catch (error) {
+        next(error)        
+    }
+}
+
 async function getAnalyticsController(req, res, next) {
     const { _id } = req.user;
     const fromDate = req.query.fromDate
@@ -66,5 +101,6 @@ async function getAnalyticsController(req, res, next) {
 
 module.exports = {
     registerAndUpdateAnalytics,
-    getAnalyticsController
+    getAnalyticsController,
+    backToStoreAnalytics
 };

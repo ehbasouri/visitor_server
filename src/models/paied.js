@@ -1,15 +1,10 @@
 const mongoose = require('mongoose');
 
-const DebtSchema = new mongoose.Schema({
+const PaiedSchema = new mongoose.Schema({
     amount: {
         type: Number,
         require: true,
         dfault: 0
-    },
-    paied_amount: {
-        type: Number,
-        require: true,
-        default: 0
     },
     business_id: {
         type: String,
@@ -19,16 +14,16 @@ const DebtSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    client: {
-        type: Object,
-        required: true
+    order_id: {
+        type: String
     },
-    business: {
-        type: Object,
-        required: true
+    is_debt:{
+        type: Boolean,
+        require: true,
+        default: false
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 
-const Debt = mongoose.model('debt', DebtSchema);
+const Paied = mongoose.model('paied', PaiedSchema);
 
-module.exports = Debt;
+module.exports = Paied;

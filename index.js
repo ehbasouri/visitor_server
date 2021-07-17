@@ -11,7 +11,7 @@ var upload = multer({ dest: 'uploads/' })
 
 const app = express();
 app.use(bodyParser.json());
-app.use(morgan('combined'))
+app.use(morgan('combined'));
 
 app.use(cors({
     origin: ["*", "http://localhost:3000", "http://ehsan2.ir", "https://ehsan2.ir", "http://192.168.1.158:3000", "http://192.168.1.119:3000"],
@@ -32,7 +32,6 @@ db.connect(
     }
 });
 
-
 app.use(express.static('uploads'))
 // app.use('/static', express.static('public'))
 
@@ -42,8 +41,6 @@ app.post('/file', upload.single('file'), function (req, res, next) {
 
 app.use('/api', apiRouter);
 
-
-
 app.use(function (err, req, res, next) {
 
     if (err instanceof ValidationError) {
@@ -52,8 +49,6 @@ app.use(function (err, req, res, next) {
     console.log(err);
     return res.status(500).json(err)
 });
-
-
 
 app.listen( PORT, () => {
     console.log('Authentication service started on port '+ PORT);

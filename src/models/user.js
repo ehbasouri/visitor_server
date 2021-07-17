@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at"  } });
 
+// UserSchema.index({name: 'text', username: "text"});
+
+UserSchema.index({name: 'text'});
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

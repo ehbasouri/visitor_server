@@ -96,7 +96,11 @@ async function getUserInfo(req, res, next) {
 
 async function getUsersController(req, res, next) {
     try {
-        const users = await userQuery.getQuery(req.query, req.query.page, req.query.limit)
+
+        const text = req.query.name
+        delete req.query.name
+
+        const users = await userQuery.getQuery(req.query, req.query.page, req.query.limit, text)
         return res.json({users});
     } catch (error) {
         next(error);
