@@ -48,7 +48,8 @@ const {
     deleteDebtController,
     putDebtController,
     autoUpdateDebtController,
-    backToStoreDebtController } = require('../controlers/debt.controller');
+    backToStoreDebtController,
+    autoUpdateDebtWithPaied } = require('../controlers/debt.controller');
 //paied
 const { 
     inserPaiedController,
@@ -69,11 +70,13 @@ const {
     getBusinessProductController,
     putProductController,
     backProductsToStore,
-    updateProductsInStore } = require('../controlers/product.controller');
+    updateProductsInStore,
+    getBusinessProductsByIds } = require('../controlers/product.controller');
 //order
 const { 
     inserOrderController,
     getOrderController,
+    deleteOrderController,
     putOrderController } = require('../controlers/order.controller');
 //package
 const { 
@@ -153,7 +156,8 @@ const {
     orderSchema,
     getClientOrderSchema,
     getBusinessOrderSchema,
-    putOrderSchema} = require('../middleware/order.validator');
+    putOrderSchema,
+    deleteOrderSchema} = require('../middleware/order.validator');
 
 //order
 const { 
@@ -200,6 +204,7 @@ apiRouter.put('/business/store', authenticateJWT, authorization, validate(putSto
 apiRouter.post('/business/product', authenticateJWT, authorization, validate(productSchema, {}, {}), inserProductController); 
 apiRouter.get('/product', authenticateJWT, validate(getProductSchema, {}, {}), getProductController );
 apiRouter.get('/business/product', authenticateJWT, authorization, validate(getBusinessProductSchema, {}, {}), getBusinessProductController );
+apiRouter.get('/business/productbyIds', authenticateJWT, authorization, validate(getBusinessProductSchema, {}, {}), getBusinessProductsByIds );
 apiRouter.delete('/business/product', authenticateJWT, authorization, validate(deleteProductSchema, {}, {}), deleteProductController );
 apiRouter.put('/business/product', authenticateJWT, authorization, validate(putProductSchema, {}, {}), putProductController );
 // apiRouter.put('/put/product', putAllController );
@@ -209,6 +214,7 @@ apiRouter.post('/order', authenticateJWT, validate(orderSchema, {}, {}), registe
 apiRouter.get('/client/order', authenticateJWT, validate(getClientOrderSchema, {}, {}), getOrderController );
 apiRouter.get('/business/order', authenticateJWT, authorization, validate(getBusinessOrderSchema, {}, {}), getOrderController );
 apiRouter.put('/order', authenticateJWT, validate(putOrderSchema, {}, {}), registerAndUpdateAnalytics, backToStoreAnalytics, updateProductsInStore, autoUpdateDebtController, backToStoreDebtController, backProductsToStore , putOrderController );
+apiRouter.delete('/order', authenticateJWT, validate(deleteOrderSchema, {}, {}), deleteOrderController );
 
 //package
 apiRouter.post('/package', authenticateJWT, authorization, validate(packageSchema, {}, {}), insertPackageController);
@@ -238,19 +244,9 @@ apiRouter.get('/fcm', authenticateJWT, getFcmTokenController );
 apiRouter.delete('/fcm', authenticateJWT, validate(deleteFcmTokenSchema, {}, {}), deleteFcmTokenController );
 
 //paied
-apiRouter.post('/business/paied', authenticateJWT, authorization, validate(paiedSchema, {}, {}), inserPaiedController);
+apiRouter.post('/business/paied', authenticateJWT, authorization, validate(paiedSchema, {}, {}), autoUpdateDebtWithPaied, inserPaiedController);
 apiRouter.get('/paied', authenticateJWT, validate(getPaiedSchema, {}, {}), getPaiedController );
 apiRouter.delete('/business/paied', authenticateJWT, authorization, validate(deletePaiedSchema, {}, {}), deletePaiedController );
 apiRouter.put('/business/paied', authenticateJWT, authorization, validate(putPaiedSchema, {}, {}), putPaiedController );
-
-// apiRouter.delete('/product/:id', Controller.deleteProduct);
-// apiRouter.put('/product/:id', validateRequest.checkProduct, validateRequest.productValidator, Controller.updateProduct);
-// apiRouter.get('/product/:id', Controller.getProductById);
-// apiRouter.get('/userproducts/:page', Controller.getProductByUserId);
-// apiRouter.get('/category/:parId', Controller.getCategoryByparId);
-// apiRouter.get('/category', Controller.getCategoryByparId);
-// apiRouter.post('/productToPost', validate(validateRequest.productToPostValidator), Controller.productToPost);
-// apiRouter.post('/product/image/:imageName/:product/:fromBytes/:mediaIndex/:lastFile/:width/:height', Controller.uploadProductImage);
-// apiRouter.post('/product/video/:videoName/:product/:fromBytes/:mediaIndex/:lastFile/:width/:height', Controller.uploadProductVideo);
 
 module.exports = apiRouter;

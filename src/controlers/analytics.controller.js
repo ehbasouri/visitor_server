@@ -91,8 +91,10 @@ async function getAnalyticsController(req, res, next) {
     const toDate = req.query.toDate
     delete req.query.fromDate
     delete req.query.toDate
+    console.log("fromDate : ", fromDate)
+    console.log("toDate : ", toDate)
     try {
-        const analytics = await analyticsQuery.getQuery({business_id: _id, ...req.query}, req.query.page, req.query.limit, null, fromDate, toDate, {});
+        const analytics = await analyticsQuery.getQuery({business_id: _id, ...req.query}, req.query.page, req.query.limit, null, fromDate, toDate, {}, "created_at");
         return res.status(200).json(analytics)
     } catch (error) {
         next(error);

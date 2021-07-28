@@ -11,7 +11,8 @@ const categorySchema = {
 
 const getCategorySchema = {
     query: Joi.object({
-        parId : Joi.string().required(),
+        parId : Joi.string(),
+        _id : Joi.string(),
         business_id: Joi.string().required(),
         name : Joi.string(),
         edge : Joi.boolean(),
@@ -23,7 +24,8 @@ const getCategorySchema = {
 
 const getBusinessCategorySchema = {
     query: Joi.object({
-        parId : Joi.string().required(),
+        parId : Joi.string(),
+        _id : Joi.string(),
         name : Joi.string(),
         edge : Joi.boolean(),
         page : Joi.string(),

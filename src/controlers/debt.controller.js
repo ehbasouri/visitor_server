@@ -1,6 +1,6 @@
 const queries = require("../queries/query")
 const Order = require("../models/order");
-const Debt = require("../models/Debt");
+const Debt = require("../models/debt");
 const Paied = require("../models/paied");
 
 const debtQueries = Object.create(queries);
@@ -103,6 +103,40 @@ async function backToStoreDebtController(req, res, next) {
     }
 }
 
+async function autoUpdateDebtWithPaied(req, res, next) {
+    
+    try {
+        const current_debt = await Debt.findOne({client_id: req.body.client_id, business_id: req.body.business_id})
+        if(current_debt){
+            var query_data = {};
+            if(req.body.is_debt){
+                query_data = {amount: current_debt.amount + req.body.amount }
+            }else {
+                query_data = {paied_amount: current_debt.paied_amount + req.body.amount }
+            }
+            const resultDebt = await debtQueries.putQuery(current_debt._id, query_data )
+        }else {
+            const insert_debt_data = {
+                business_id: req.body.business_id,
+                client_id: req.body.client_id,
+                business: req.body.business,
+                client: req.body.client
+            };
+            if(req.body.is_debt){
+                insert_debt_data.amount = req.body.amount;
+                insert_debt_data.paied_amount = 0;
+            }else {
+                insert_debt_data.amount= 0;
+                insert_debt_data.paied_amount = req.body.amount;
+            }
+            const resultInsertDebt = await debtQueries.insertQuery(insert_debt_data);
+        }
+        next() 
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 
 module.exports = {
@@ -111,6 +145,7 @@ module.exports = {
     deleteDebtController,
     putDebtController,
     autoUpdateDebtController,
-    backToStoreDebtController
+    backToStoreDebtController,
+    autoUpdateDebtWithPaied
 }
 

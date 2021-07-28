@@ -5,6 +5,7 @@ const orderQueries = Object.create(queries);
 orderQueries.Model = Order;
 
 async function inserOrderController(req, res, next) {
+    console.log("req : ", req.body);
     try {
         const order = await orderQueries.insertQuery({...req.body});
         return res.status(200).json(order);
@@ -18,6 +19,7 @@ async function getOrderController(req, res, next) {
     const toDate = req.query.toDate
     delete req.query.fromDate
     delete req.query.toDate
+    
     try {
         const order = await orderQueries.getQuery(req.query, req.query.page, req.query.limit, null, fromDate, toDate);
         return res.status(200).json(order)
@@ -33,11 +35,24 @@ async function putOrderController(req, res, next) {
     } catch (error) {
         next(error);
     }
+} 
+
+async function deleteOrderController(req, res, next) {
+    try {
+        const result = await orderQueries.deleteQuery({_id: req.query.id});
+        return res.status(200).json(result)
+    } catch (error) {
+        next(error);
+    }
 }
+
+
+
 
 module.exports = {
     inserOrderController,
     getOrderController,
-    putOrderController
+    putOrderController,
+    deleteOrderController
 }
 

@@ -49,7 +49,8 @@ const getBusinessProductSchema = {
         description: Joi.string(),
         image: Joi.string(),
         _id: Joi.string(),
-        is_private: Joi.boolean()
+        is_private: Joi.boolean(),
+        ids: Joi.string()
     })
 }
 

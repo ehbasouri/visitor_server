@@ -30,7 +30,9 @@ const getBusinessOrderSchema = {
         status: Joi.string(),
         fromDate: Joi.date(),
         toDate: Joi.date(),
-        is_debt: Joi.boolean()
+        is_debt: Joi.boolean(),
+        sort: Joi.any(),
+        ids: Joi.array()
     })
 }
 
@@ -46,7 +48,8 @@ const getClientOrderSchema = {
         status: Joi.string(),
         fromDate: Joi.date(),
         toDate: Joi.date(),
-        is_debt: Joi.boolean()
+        is_debt: Joi.boolean(),
+        sort: Joi.object()
     })
 }
 
@@ -67,11 +70,20 @@ const putOrderSchema = {
     })
 }
 
+
+
+const deleteOrderSchema = {
+    query: Joi.object({
+        id : Joi.string().required()
+    })
+}
+
 module.exports = {
     orderSchema,
     getBusinessOrderSchema,
     getClientOrderSchema,
-    putOrderSchema
+    putOrderSchema,
+    deleteOrderSchema
 }
 
 

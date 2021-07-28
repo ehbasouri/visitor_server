@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(morgan('combined'));
 
 app.use(cors({
-    origin: ["*", "http://localhost:3000", "http://ehsan2.ir", "https://ehsan2.ir", "http://192.168.1.158:3000", "http://192.168.1.119:3000"],
+    origin: ["*", "http://localhost:3000", "https://ehsan2.ir"],
     methods: ["POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -23,8 +23,9 @@ const PORT = process.env.DEV_PORT || 5500;
 
 //initializing database for connecting and starting server
 db.connect(
-    "mongodb://localhost/visitor"
-    // "mongodb://ehsanir_ehsan:EhsanB69EhsanB69@ehsan2.ir:27017/ehsanir_db"
+    // "mongodb://mongo-server:27017"
+    // "mongodb://localhost/visitor"
+    "mongodb://ehsanir_ehsan:EhsanB69EhsanB69@ehsan2.ir:27017/ehsanir_db"
     , (err) => {
     if (err) {
         console.log(err.message, err.stack, 'can not connect to database server');

@@ -5,7 +5,6 @@ const fcmTokenQuery = Object.create(queries);
 fcmTokenQuery.Model = FcmToken;
 
 async function inserFcmTokenController(req, res, next) {
-    console.log("req : ", req.user);
     try {
         const fcmToken = await fcmTokenQuery.getQuery({user_id: req.user._id});
         let updatedFcmList = []

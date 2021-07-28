@@ -36,6 +36,16 @@ async function getBusinessProductController(req, res, next) {
     }
 }
 
+async function getBusinessProductsByIds(req, res, next) {
+    const ids = req.query.ids.split(",");
+    try {
+        const result = await Product.find({'_id': {$in: [...ids]}})
+        return res.status(200).json(result)
+    } catch (error) {
+        next(error);
+    }
+}
+
 async function deleteProductController(req, res, next) {
     try {
         const result = await productQueries.deleteQuery({_id: req.query.id, business_id: req.user._id});
@@ -165,7 +175,8 @@ module.exports = {
     putProductController,
     getBusinessProductController,
     updateProductsInStore,
-    backProductsToStore
+    backProductsToStore,
+    getBusinessProductsByIds
     // putAllController
 }
 

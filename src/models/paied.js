@@ -21,6 +21,9 @@ const PaiedSchema = new mongoose.Schema({
         type: Boolean,
         require: true,
         default: false
+    },
+    description: {
+        type: String
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 
