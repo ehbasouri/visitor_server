@@ -42,6 +42,11 @@ const BusinessSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    is_public : {
+        type: Boolean,
+        required: false,
+        default: true
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: "updated_at" } });
 

@@ -29,7 +29,8 @@ const putBusinessSchema = {
         avatar: Joi.string(),
         role: Joi.string(),
         sign_url: Joi.string(),
-        is_active: Joi.boolean()
+        is_active: Joi.boolean(),
+        is_public: Joi.boolean()
     }),
 }
 
@@ -56,7 +57,8 @@ const getBusinesssSchema = {
         avatar: Joi.string(),
         role: Joi.string(),
         sign_url: Joi.string(),
-        is_active: Joi.boolean()
+        is_active: Joi.boolean(),
+        is_public: Joi.boolean()
     })
 }
 
